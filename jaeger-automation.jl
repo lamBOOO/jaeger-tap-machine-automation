@@ -134,17 +134,20 @@ println("""
 ╚╝┴ ┴└─┘└─┘└─┘┴└─   ╩ ┴ ┴┴    ╩ ╩┴ ┴└─┘┴ ┴┴┘└┘└─┘  ╩═╝└─┘ ┴  ┴ └─┘┴└─ ┴
 """)
 
+@info "Webdriver: Start"
 rwd = RemoteWebDriver(Capabilities("chrome"), host = "127.0.0.1", port = 4444)
+sleep(1)
 s = Session(rwd)
 cfg = YAML.load_file("config.yml")
 enter_shop!(s, cfg)
+@info "Webdriver: End"
 
 options = [
   "Create accounts"
   "Apply in all accounts"
 ]
 menu = RadioMenu(options, pagesize=4)
-choice = request("Choose your favorite fruit:", menu)
+choice = request("Choose program to run:", menu)
 if choice == 1
   register_all!(s, cfg)
 elseif choice == 2
