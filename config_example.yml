@@ -3,7 +3,7 @@ lastname: "Mustermann"
 birth_dd: 1
 birth_mm: 1
 birth_yyyy: 1987
-gmail_id: "maxmuster123"
+gmail_id: "maxmuster123" # for maxmuster123+001@gmail.com ...
 gmail_start: 1
 gmail_end: 100
 pw: "password123"

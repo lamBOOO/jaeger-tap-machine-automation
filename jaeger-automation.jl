@@ -1,5 +1,6 @@
 import REPL
 using REPL.TerminalMenus
+using Dates
 using WebDriver
 using YAML
 
@@ -108,10 +109,15 @@ function apply_all!(s, cfg)
   end
 end
 
+"""
+Application once per 60 minutes is possible.
+"""
 function automate_apply!(s, cfg)
   while true
+    start_time = now()
     apply_all!(s, cfg)
-    for i=60:1
+    waitminutes = round(now() - start_time, Dates.Minute(1)).value
+    for i=waitminutes:-1:1
       println("sleep $(i) mins")
       sleep(60)
     end
