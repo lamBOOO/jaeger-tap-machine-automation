@@ -117,7 +117,7 @@ function automate_apply!(s, cfg)
     start_time = now()
     apply_all!(s, cfg)
     waitminutes = round(now() - start_time, Dates.Minute(1)).value
-    for i=waitminutes:-1:1
+    for i=60-waitminutes:-1:1
       println("sleep $(i) mins")
       sleep(60)
     end
