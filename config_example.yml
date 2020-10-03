@@ -1,0 +1,12 @@
+firstname: "Max"
+lastname: "Mustermann"
+birth_dd: 1
+birth_mm: 1
+birth_yyyy: 1987
+gmail_id: "maxmuster123"
+gmail_start: 1
+gmail_end: 100
+pw: "password123"
+street: "Straße 1"
+zipcode: "56789"
+city: "Berlin"
