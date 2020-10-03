@@ -88,7 +88,12 @@ end
 function apply!(s)
   navigate!(s, "https://shop.jaegermeister.de/shotmachine")
   apply_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/div[1]/div[3]/div[3]/button""")
-  click!(apply_button)
+  try
+    click!(apply_button)
+    @info "Applied"
+  catch e
+    @info "Skipped"
+  end
 end
 
 function apply_all!(s, cfg)
@@ -103,7 +108,7 @@ function apply_all!(s, cfg)
   end
 end
 
-function automate_apply(s, cfg)
+function automate_apply!(s, cfg)
   while true
     apply_all!(s, cfg)
     for i=60:1
@@ -126,7 +131,7 @@ println("""
 rwd = RemoteWebDriver(Capabilities("chrome"), host = "127.0.0.1", port = 4444)
 s = Session(rwd)
 cfg = YAML.load_file("config.yml")
-enter_shop!(s)
+enter_shop!(s, cfg)
 
 options = [
   "Create accounts"
