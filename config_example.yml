@@ -10,3 +10,4 @@ pw: "password123"
 street: "Straße 1"
 zipcode: "56789"
 city: "Berlin"
+apply_wait: 5

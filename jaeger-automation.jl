@@ -103,7 +103,7 @@ function apply_all!(s, cfg)
   for email in emails
     login!(s, email, cfg["pw"])
     apply!(s)
-    sleep(1)
+    sleep(cfg["apply_wait"])
     logout!(s)
     println("Done:", email)
   end
