@@ -88,8 +88,8 @@ end
 
 function apply!(s)
   navigate!(s, "https://shop.jaegermeister.de/shotmachine")
-  apply_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/div[1]/div[3]/div[3]/button""")
   try
+    apply_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/div[1]/div[3]/div[3]/button""")
     click!(apply_button)
     @info "Applied"
   catch e
@@ -119,6 +119,7 @@ function automate_apply!(s, cfg)
     waitminutes = round(now() - start_time, Dates.Minute(1)).value
     for i=60-waitminutes:-1:1
       println("sleep $(i) mins")
+      navigate!(s, "about:blank") # to not close session, bug?
       sleep(60)
     end
   end
@@ -136,6 +137,7 @@ println("""
 
 @info "Webdriver: Start"
 rwd = RemoteWebDriver(Capabilities("chrome"), host = "127.0.0.1", port = 4444)
+# rwd = RemoteWebDriver(Capabilities("firefox"), host = "127.0.0.1", port = 4445)
 sleep(1)
 s = Session(rwd)
 cfg = YAML.load_file("config.yml")

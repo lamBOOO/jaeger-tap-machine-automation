@@ -10,8 +10,12 @@ Automate the application process of the *Jaeger Tap Machine Lottery*.
 ## Usage
 
 ```bash
-## 1. Start Selenium Chrome inside Docker container
+## 1.1. Either start Selenium Chrome inside Docker container
 docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200921
+## 1.2. Or start selenium-server after installing (e.g. for macOS)
+# brew cask install chromedriver
+# brew install selenium-server-standalone
+# selenium-server -port 4445
 ## 2. Create config from template
 cp config_example.yml config.yml
 ## 3. Insert your data into config.yml
