@@ -4,7 +4,9 @@ Automate the application process of the *Jaeger Tap Machine Lottery*.
 
 ## Requirements
 
-1. Docker
+1. Either:
+    1. Docker
+    2. Installed `selenium-server` with either `chromedriver` or `geckodriver`
 2. Julia 1.5
 
 ## Usage
