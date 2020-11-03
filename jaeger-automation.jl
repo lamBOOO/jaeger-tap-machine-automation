@@ -20,12 +20,12 @@ function enter_shop!(s, cfg)
 end
 
 function register_all!(s, cfg)
-  emails = [string(cfg["gmail_id"], "+$(lpad(i,3,"0"))@gmail.com") for i=cfg["gmail_start"]:cfg["gmail_end"]]
+  emails = [string(cfg["gmail_id"], "+A$(lpad(i,3,"0"))@gmail.com") for i=cfg["gmail_start"]:cfg["gmail_end"]]
   logout!(s)
   for email in emails
     navigate!(s, "https://shop.jaegermeister.de/mein-konto")
 
-    mr_radio = Element(s, "xpath", """//html/body/div[2]/div/section/div/div/div[1]/form/div[1]/div[2]/div[1]/label[1]/span[1]""")
+    mr_radio = Element(s, "xpath", """//*[@id="jae-registration-form"]/div[1]/div[2]/div[1]/label[1]""")
     click!(mr_radio)
 
     firstname_field = Element(s, "xpath", """//*[@id="firstname"]""")
@@ -33,11 +33,21 @@ function register_all!(s, cfg)
     lastname_field = Element(s, "xpath", """//*[@id="lastname"]""")
     element_keys!(lastname_field, cfg["lastname"])
 
-    mm_option = Element(s, "xpath", string("""/html/body/div[2]/div/section/div/div/div[1]/form/div[1]/div[2]/div[4]/div[1]/select/option[""", cfg["birth_dd"]+1, "]"))
+
+
+    mm_menu_button = Element(s, "xpath", string("""//*[@id="jae-registration-form"]/div[1]/div[2]/div[4]/div[1]/span/span[1]/span/span[2]"""))
+    click!(mm_menu_button)
+    mm_option = Element(s, "xpath", string("""/html/body/span/span/span[2]/ul/li[""", cfg["birth_dd"], "]"))
     click!(mm_option)
-    mm_option = Element(s, "xpath", string("""/html/body/div[2]/div/section/div/div/div[1]/form/div[1]/div[2]/div[4]/div[2]/select/option[""", cfg["birth_mm"]+1, "]"))
+
+    mm_menu_button = Element(s, "xpath", string("""//*[@id="jae-registration-form"]/div[1]/div[2]/div[4]/div[2]/span/span[1]/span/span[2]"""))
+    click!(mm_menu_button)
+    mm_option = Element(s, "xpath", string("""/html/body/span/span/span[2]/ul/li[""", cfg["birth_mm"], "]"))
     click!(mm_option)
-    yyyy_option = Element(s, "xpath", string("""/html/body/div[2]/div/section/div/div/div[1]/form/div[1]/div[2]/div[4]/div[3]/select/option[""", abs(cfg["birth_yyyy"]-2004)+1, "]"))
+
+    yy_menu_button = Element(s, "xpath", string("""//*[@id="jae-registration-form"]/div[1]/div[2]/div[4]/div[3]/span/span[1]/span/span[2]"""))
+    click!(yy_menu_button)
+    yyyy_option = Element(s, "xpath", string("""/html/body/span/span/span[2]/ul/li[""", abs(cfg["birth_yyyy"]-2003)+1, "]"))
     click!(yyyy_option)
 
     email_field = Element(s, "xpath", """//*[@id="register_personal_email"]""")
@@ -52,13 +62,12 @@ function register_all!(s, cfg)
     city_field = Element(s, "xpath", """//*[@id="city"]""")
     element_keys!(city_field, cfg["city"])
 
-    tos_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/form/div[5]/div/label/span[1]""")
+    tos_button = Element(s, "xpath", """//*[@id="jae-registration-form"]/div[5]""")
     click!(tos_button)
 
     sleep(2)
 
-    # submit_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/form/div[7]/button""")
-    submit_button = Element(s, "xpath", """//*[@id="jae-registration-form"]/div[7]/div/button""")
+    submit_button = Element(s, "xpath", """//*[@id="jae-registration-form"]/div[7]/button""")
     click!(submit_button)
 
     sleep(3)
@@ -72,7 +81,7 @@ function login!(s, email, pw)
   navigate!(s, "https://shop.jaegermeister.de/mein-konto")
   email_box = Element(s, "xpath", """//*[@id="email"]""")
   pw_box = Element(s, "xpath", """//*[@id="passwort"]""")
-  login_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[2]/div[2]/div/div/form/div[5]/button""")
+  login_button = Element(s, "xpath", """//*[@id="jae-login-form"]/div[5]/button""")
 
   # fill credentials
   element_keys!(email_box, email)
@@ -87,7 +96,10 @@ function logout!(s)
 end
 
 function apply!(s)
+  println("APPLY START")
+  sleep(2)
   navigate!(s, "https://shop.jaegermeister.de/shotmachine")
+  sleep(2)
   try
     apply_button = Element(s, "xpath", """/html/body/div[2]/div/section/div/div/div[1]/div[1]/div[3]/div[3]/button""")
     click!(apply_button)
@@ -95,10 +107,11 @@ function apply!(s)
   catch e
     @info "Skipped"
   end
+  println("APPLY END")
 end
 
 function apply_all!(s, cfg)
-  emails = [string(cfg["gmail_id"], "+$(lpad(i,3,"0"))@gmail.com") for i=cfg["gmail_start"]:cfg["gmail_end"]]
+  emails = [string(cfg["gmail_id"], "+A$(lpad(i,3,"0"))@gmail.com") for i=cfg["gmail_start"]:cfg["gmail_end"]]
   logout!(s)
   for email in emails
     login!(s, email, cfg["pw"])
